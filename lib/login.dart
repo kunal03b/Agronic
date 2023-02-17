@@ -1,5 +1,6 @@
 import 'package:agriculture/main.dart';
 import 'package:agriculture/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -63,6 +64,7 @@ class _LoginState extends State<Login> {
                                 children: [
                                   TextField(
                                     obscureText: false,
+                                    controller: emailController,
                                     decoration: InputDecoration(
                                         hintText: 'Email',
                                         prefixIcon: Icon(Icons.person),
@@ -77,6 +79,7 @@ class _LoginState extends State<Login> {
                                   ),
                                   TextField(
                                     obscureText: true,
+                                    controller: passwordController,
                                     decoration: InputDecoration(
                                         hintText: 'Password',
                                         prefixIcon: Icon(Icons.lock),
@@ -98,11 +101,17 @@ class _LoginState extends State<Login> {
                                                 borderRadius:
                                                     BorderRadius.circular(5))),
                                         onPressed: () {
-                                          Navigator.push(
-                                              (context),
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Index()));
+                                          FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text,
+                                              password: passwordController.text).then((value) {
+                                            Navigator.push(
+                                                (context),
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Index()));
+                                          }).onError((error, stackTrace) {
+                                            print("Error ${error.toString()}");
+                                          });
+
                                         },
                                         child: Center(
                                           child: Text(

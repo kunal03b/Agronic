@@ -17,6 +17,8 @@ class _Sign_upState extends State<Sign_up> {
   final TextEditingController passwordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
+    // TextEditingController _emailController = TextEditingController();
+    // TextEditingController _passwordController = TextEditingController();
     return Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -35,31 +37,33 @@ class _Sign_upState extends State<Sign_up> {
             //       },
             //       icon: Icon(Icons.arrow_back)),
             // ),
-            body: Container(
+            body: SingleChildScrollView(
+            child: Container(
               child: Column(children: [
-                Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop((context),
-                              MaterialPageRoute(builder: (context) => Login()));
-                        },
-                        icon: Icon(Icons.arrow_back)),
-                  ],
-                ),
-                SingleChildScrollView(
-                  child: Column(
+                // Row(
+                //   children: [
+                //     IconButton(
+                //         onPressed: () {
+                //           Navigator.pop((context),
+                //               MaterialPageRoute(builder: (context) => Login()));
+                //         },
+                //         icon: Icon(Icons.arrow_back)),
+                //   ],
+                // ),
+                // SingleChildScrollView(
+                //   child:
+                  Column(
                     children: [
                       Container(
                         padding: EdgeInsets.only(
-                          top: 330,
+                          top: 300,
                           left: 35,
                           right: 35,
                         ),
                         child: Column(
                           children: [
                             TextField(
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               obscureText: false,
                               decoration: InputDecoration(
                                   hintText: 'Name',
@@ -72,7 +76,8 @@ class _Sign_upState extends State<Sign_up> {
                               height: 20,
                             ),
                             TextField(
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
+                              controller: emailController,
                               obscureText: false,
                               decoration: InputDecoration(
                                   hintText: 'Email',
@@ -86,8 +91,9 @@ class _Sign_upState extends State<Sign_up> {
                               height: 20,
                             ),
                             TextField(
-                              style: TextStyle(color: Colors.white),
-                              obscureText: false,
+                              style: TextStyle(color: Colors.black),
+                              controller: passwordController,
+                              obscureText: true,
                               decoration: InputDecoration(
                                   hintText: 'Password',
                                   prefixIcon: Icon(Icons.lock),
@@ -172,8 +178,8 @@ class _Sign_upState extends State<Sign_up> {
                       ),
                     ],
                   ),
-                ),
+                // ),
               ]),
-            )));
+            ))));
   }
 }

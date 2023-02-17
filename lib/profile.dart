@@ -1,3 +1,4 @@
+import 'package:agriculture/login.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -108,15 +109,30 @@ class _ProfileState extends State<Profile> {
                         width: 20,
                       ),
                       Container(
-                        width: 300,
-                        child: Text(
-                          'Log Out',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                        ),
-                      )
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.black,
+                                padding: EdgeInsets.all(15),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(5))),
+                            onPressed: () {
+                              Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()));
+                            },
+                            child: Center(
+                              child: Text(
+                                'Log Out',
+                                style: TextStyle(
+                                  // fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            )),
+                      ),
                     ],
                   ))
             ],
