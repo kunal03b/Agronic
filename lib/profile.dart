@@ -1,4 +1,5 @@
 import 'package:agriculture/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -117,11 +118,10 @@ class _ProfileState extends State<Profile> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.circular(5))),
-                            onPressed: () {
-                              Navigator.push(
-                                  (context),
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()));
+                            onPressed: () async {
+                                FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+                                await firebaseAuth.signOut();
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const Login()));
                             },
                             child: Center(
                               child: Text(

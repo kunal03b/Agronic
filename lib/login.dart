@@ -1,3 +1,4 @@
+import 'package:agriculture/home.dart';
 import 'package:agriculture/main.dart';
 import 'package:agriculture/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +18,20 @@ class _LoginState extends State<Login> {
 
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
+  void checkCurrentUser() async {
+    final currentUser = await FirebaseAuth.instance.currentUser;
+    if(currentUser != null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const Index()));
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkCurrentUser();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -9,6 +10,30 @@ class Sensor extends StatefulWidget {
 }
 
 class _SensorState extends State<Sensor> {
+  bool isDataLoaded = false;
+  String sensorOne = '0';
+  DatabaseReference sensorOneRef = FirebaseDatabase.instance.ref('sensorOne');
+
+  void getData() async {
+    // final snapshot = await ref.child('sensorOne').get();
+    // setState(() {
+    //   sensorOne = snapshot.value.toString();
+    // });
+
+    sensorOneRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        sensorOne = event.snapshot.value.toString();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +52,7 @@ class _SensorState extends State<Sensor> {
                   ),
                 ),
                 Spacer(),
+                isDataLoaded ? CircularProgressIndicator() : Text(sensorOne),
                 Icon(
                   Icons.percent,
                   size: 30,
@@ -37,12 +63,7 @@ class _SensorState extends State<Sensor> {
           SizedBox(
             height: 30,
           ),
-          CircularPercentIndicator(
-            radius: 100,
-            lineWidth: 20,
-            percent: 0.4,
-            progressColor: Colors.blue.shade700,
-          ),
+
         ],
       ),
     ));
