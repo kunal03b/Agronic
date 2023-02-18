@@ -2,6 +2,7 @@ import 'package:agriculture/main.dart';
 import 'package:agriculture/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -12,9 +13,11 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  // final storage = new FlutterSecureStorage();
 
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final emailField = TextFormField(
@@ -110,6 +113,7 @@ class _LoginState extends State<Login> {
                                                         Index()));
                                           }).onError((error, stackTrace) {
                                             print("Error ${error.toString()}");
+
                                           });
 
                                         },
