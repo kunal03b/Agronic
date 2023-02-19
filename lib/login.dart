@@ -21,8 +21,9 @@ class _LoginState extends State<Login> {
 
   void checkCurrentUser() async {
     final currentUser = await FirebaseAuth.instance.currentUser;
-    if(currentUser != null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const Index()));
+    if (currentUser != null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (builder) => const Index()));
     }
   }
 
@@ -119,8 +120,12 @@ class _LoginState extends State<Login> {
                                                 borderRadius:
                                                     BorderRadius.circular(5))),
                                         onPressed: () {
-                                          FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text,
-                                              password: passwordController.text).then((value) {
+                                          FirebaseAuth.instance
+                                              .signInWithEmailAndPassword(
+                                                  email: emailController.text,
+                                                  password:
+                                                      passwordController.text)
+                                              .then((value) {
                                             Navigator.push(
                                                 (context),
                                                 MaterialPageRoute(
@@ -128,9 +133,7 @@ class _LoginState extends State<Login> {
                                                         Index()));
                                           }).onError((error, stackTrace) {
                                             print("Error ${error.toString()}");
-
                                           });
-
                                         },
                                         child: Center(
                                           child: Text(
