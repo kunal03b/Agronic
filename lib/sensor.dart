@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+// import 'package:percent_indicator/percent_indicator.dart';
 
 class Sensor extends StatefulWidget {
   const Sensor({super.key});
@@ -60,6 +60,7 @@ class _SensorState extends State<Sensor> {
               ],
             ),
           ),
+
           SizedBox(
             height: 30,
           ),
