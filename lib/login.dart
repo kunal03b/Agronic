@@ -29,10 +29,12 @@ class _Sign_InState extends State<Sign_In> {
     return user;
   }
 
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
