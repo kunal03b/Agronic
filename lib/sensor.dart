@@ -11,7 +11,9 @@ class Sensor extends StatefulWidget {
 
 class _SensorState extends State<Sensor> {
   bool isDataLoaded = false;
-  String Percentage_Moisture = '0';
+  String
+  Percentage_Moisture = '0';
+  var result = 0.9;
   DatabaseReference Percentage_MoistureRef =
       FirebaseDatabase.instance.ref('Percentage_Moisture');
 
@@ -23,7 +25,8 @@ class _SensorState extends State<Sensor> {
 
     Percentage_MoistureRef.onValue.listen((DatabaseEvent event) {
       setState(() {
-        Percentage_Moisture = event.snapshot.value.toString();
+        Percentage_Moisture = event.snapshot.child('Percentage_Moisture').value.toString();
+        result = double.tryParse(Percentage_Moisture)!;
       });
     });
   }
@@ -68,7 +71,7 @@ class _SensorState extends State<Sensor> {
           ),
           LinearPercentIndicator(
             lineHeight: 20,
-            percent: 0.7,
+            percent: result/100,
             center: Text(Percentage_Moisture),
             animation: true,
             animationDuration: 1500,

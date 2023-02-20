@@ -119,13 +119,20 @@ class _Home1State extends State<Home1> {
                 onTap: senddata,
                 child: CustomSwitch(motor, onChangedFunction1)),
             SizedBox(height: 30),
+            InkWell(
+              onTap: senddata,
+            child:
             Text('Valve 1',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 )),
+            ),
+
             SizedBox(height: 20),
-            CustomSwitch(val1, onChangedFunction2),
+            InkWell(
+                onTap: senddata,
+                child: CustomSwitch(val1, onChangedFunction2)),
             SizedBox(height: 30),
             Text('Valve 2',
                 style: TextStyle(
@@ -134,7 +141,7 @@ class _Home1State extends State<Home1> {
                 )),
             SizedBox(height: 20),
             CustomSwitch(val2, onChangedFunction3),
-
+ElevatedButton(onPressed: senddata, child: Text('Verify'))
           ],
         ),
       ),
