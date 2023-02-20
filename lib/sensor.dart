@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-// import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class Sensor extends StatefulWidget {
   const Sensor({super.key});
@@ -11,18 +11,19 @@ class Sensor extends StatefulWidget {
 
 class _SensorState extends State<Sensor> {
   bool isDataLoaded = false;
-  String sensorOne = '0';
-  DatabaseReference sensorOneRef = FirebaseDatabase.instance.ref('sensorOne');
+  String Percentage_Moisture = '0';
+  DatabaseReference Percentage_MoistureRef =
+      FirebaseDatabase.instance.ref('Percentage_Moisture');
 
   void getData() async {
-    // final snapshot = await ref.child('sensorOne').get();
+    // final snapshot = await ref.child('Percentage_Moisture').get();
     // setState(() {
-    //   sensorOne = snapshot.value.toString();
+    //   Percentage_Moisture = snapshot.value.toString();
     // });
 
-    sensorOneRef.onValue.listen((DatabaseEvent event) {
+    Percentage_MoistureRef.onValue.listen((DatabaseEvent event) {
       setState(() {
-        sensorOne = event.snapshot.value.toString();
+        Percentage_Moisture = event.snapshot.value.toString();
       });
     });
   }
@@ -51,8 +52,10 @@ class _SensorState extends State<Sensor> {
                     fontSize: 30,
                   ),
                 ),
-                Spacer(),
-                isDataLoaded ? CircularProgressIndicator() : Text(sensorOne),
+                // Spacer(),
+                // isDataLoaded
+                //     ? CircularProgressIndicator()
+                //     : Text(Percentage_Moisture),
                 Icon(
                   Icons.percent,
                   size: 30,
@@ -60,11 +63,19 @@ class _SensorState extends State<Sensor> {
               ],
             ),
           ),
-
           SizedBox(
             height: 30,
           ),
+          LinearPercentIndicator(
+            lineHeight: 20,
+            percent: 0.7,
+            center: Text(Percentage_Moisture),
+            animation: true,
+            animationDuration: 1500,
+            progressColor: Colors.blue.shade400,
+            backgroundColor: Colors.blueGrey.shade100,
 
+          ),
         ],
       ),
     ));

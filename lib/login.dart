@@ -1,203 +1,172 @@
-import 'package:agriculture/home.dart';
-import 'package:agriculture/main.dart';
-import 'package:agriculture/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:agriculture/reusable_widget.dart';
+import 'Home.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Sign_In extends StatefulWidget {
+  const Sign_In({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Sign_In> createState() => _Sign_InState();
 }
 
-class _LoginState extends State<Login> {
-  final _formKey = GlobalKey<FormState>();
-  // final storage = new FlutterSecureStorage();
-
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
-
-  void checkCurrentUser() async {
-    final currentUser = await FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (builder) => const Index()));
+class _Sign_InState extends State<Sign_In> {
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+        required String password,
+        required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print("No User found for that email");
+      }
     }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    checkCurrentUser();
+    return user;
   }
 
   @override
   Widget build(BuildContext context) {
-    final emailField = TextFormField(
-      autofocus: false,
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      // validator: (){},
-      onSaved: (value) {
-        emailController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-    );
-    final passwordField = TextFormField(
-      autofocus: false,
-      controller: passwordController,
-      // validator: (){},
-      onSaved: (value) {
-        passwordController.text = value!;
-      },
-      textInputAction: TextInputAction.done,
-    );
-
-    return Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage(
-            'assets/Sign_In.jpg',
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.1,
+              right: 20,
+              left: 20,
+              bottom: 20),
+          child: Column(
+            children: [
+              logo('assets/Icon.png'),
+              textField('Email', Icons.person, false, _emailController),
+              SizedBox(height: 10),
+              textField('Password', Icons.lock, true, _passwordController),
+              SizedBox(
+                height: 10,
+              ),
+              elevatedButton(context, true, () async {
+                User? user = await loginUsingEmailPassword(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    context: context);
+                print(user);
+                if (user != null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Home()));
+                }
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Do not have an account?'),
+                  textButton(true, () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Sign_Up()));
+                  }),
+                ],
+              ),
+            ],
           ),
-        )),
-        child: Center(
-            child: Scaffold(
-                backgroundColor: Colors.transparent,
-                body: SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.5,
-                                left: 35,
-                                right: 35,
-                              ),
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    obscureText: false,
-                                    controller: emailController,
-                                    decoration: InputDecoration(
-                                        hintText: 'Email',
-                                        prefixIcon: Icon(Icons.person),
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextField(
-                                    obscureText: true,
-                                    controller: passwordController,
-                                    decoration: InputDecoration(
-                                        hintText: 'Password',
-                                        prefixIcon: Icon(Icons.lock),
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  Container(
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black,
-                                            padding: EdgeInsets.all(15),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5))),
-                                        onPressed: () {
-                                          FirebaseAuth.instance
-                                              .signInWithEmailAndPassword(
-                                                  email: emailController.text,
-                                                  password:
-                                                      passwordController.text)
-                                              .then((value) {
-                                            Navigator.push(
-                                                (context),
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Index()));
-                                          }).onError((error, stackTrace) {
-                                            print("Error ${error.toString()}");
-                                          });
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            'Login',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('Do not have an Account?'),
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                (context),
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Sign_up()));
-                                          },
-                                          child: Text(
-                                            'Sign Up',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          )),
-                                      // TextButton(
-                                      //     onPressed: () {},
-                                      //     child: Text(
-                                      //       'Forgotton\nPassword',
-                                      //       style: TextStyle(
-                                      //           fontSize: 20,
-                                      //           color: Colors.black),
-                                      //     ))
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Forgotton Password',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ))
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ))));
+        ),
+      ),
+    );
+  }
+}
+
+class Sign_Up extends StatefulWidget {
+  const Sign_Up({super.key});
+
+  @override
+  State<Sign_Up> createState() => _Sign_UpState();
+}
+
+class _Sign_UpState extends State<Sign_Up> {
+  // static Future<User?> loginUsingEmailPassword(
+  //     {required String email,
+  //     required String password,
+  //     required BuildContext context}) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //   try {
+  //     UserCredential userCredential = await auth.signInWithEmailAndPassword(
+  //         email: email, password: password);
+  //     user = userCredential.user;
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == "user-not-found") {
+  //       print("No User found for that email");
+  //     }
+  //   }
+  //   return user;
+  // }
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _nameController = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.1,
+              right: 20,
+              left: 20,
+              bottom: 20),
+          child: Column(
+            children: [
+              logo('assets/Icon.png'),
+              textField(
+                  'Name', Icons.person, false, _nameController),
+              textField('Email', Icons.person, false, _emailController),
+              SizedBox(height: 10),
+              textField('Password', Icons.lock, true, _passwordController),
+              SizedBox(
+                height: 10,
+              ),
+              elevatedButton(context, false, ()
+              // async
+              {
+                // User? user = await loginUsingEmailPassword(
+                //     email: _emailController.text,
+                //     password: _passwordController.text,
+                //     context: context);
+                // print(user);
+                // if (user != null) {
+                //   Navigator.of(context).pushReplacement(
+                //       MaterialPageRoute(builder: (context) => Home()));
+                // }
+                FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                    email: _emailController.text,
+                    password: _passwordController.text)
+                    .then((value) {
+                  print("Created New Account");
+                  Navigator.pop((context),
+                      MaterialPageRoute(builder: (context) => Home()));
+                }).onError((error, stackTrace) {
+                  print("Error ${error.toString()}");
+                });
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Do have an account?'),
+                  textButton(false, () {
+                    Navigator.pop(context,
+                        MaterialPageRoute(builder: (context) => Sign_In()));
+                  }),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
