@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Login.dart';
@@ -22,21 +22,20 @@ class _AgronicState extends State<Agronic> {
     return MaterialApp(
       initialRoute: 'Login',
       routes: {'Login': (context) => Sign_In()},
-      title: 'Agriculture',
-      // home: Index(),
+      title: 'Agronic',
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class Agriculture extends StatefulWidget {
-  const Agriculture({super.key});
+class Agronic1 extends StatefulWidget {
+  const Agronic1({super.key});
 
   @override
-  State<Agriculture> createState() => _AgricultureState();
+  State<Agronic1> createState() => _Agronic1State();
 }
 
-class _AgricultureState extends State<Agriculture> {
+class _Agronic1State extends State<Agronic1> {
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;

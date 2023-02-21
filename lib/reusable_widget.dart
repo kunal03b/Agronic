@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 Image logo(String imagename) {
   return Image.asset(
@@ -25,7 +25,7 @@ Container textField(String text, IconData iconData, bool ispasswordtype,
             filled: true,
             // labelText: text,
             border:
-            OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         keyboardType: ispasswordtype
             ? TextInputType.visiblePassword
             : TextInputType.emailAddress,
@@ -41,7 +41,7 @@ Container elevatedButton(BuildContext context, bool isLogin, Function onTap) {
           backgroundColor: Colors.black,
           padding: EdgeInsets.all(15),
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
       onPressed: () {
         onTap();
       },
