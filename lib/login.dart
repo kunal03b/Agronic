@@ -1,7 +1,8 @@
+import 'package:agriculture/Home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:agriculture/reusable_widget.dart';
-import 'Home.dart';
+
 
 class Sign_In extends StatefulWidget {
   const Sign_In({super.key});
@@ -45,7 +46,7 @@ class _Sign_InState extends State<Sign_In> {
               bottom: 20),
           child: Column(
             children: [
-              logo('assets/Icon.png'),
+              logo('assets/Logo.png'),
               textField('Email', Icons.person, false, _emailController),
               SizedBox(height: 10),
               textField('Password', Icons.lock, true, _passwordController),
@@ -122,7 +123,7 @@ class _Sign_UpState extends State<Sign_Up> {
               bottom: 20),
           child: Column(
             children: [
-              logo('assets/Icon.png'),
+              logo('assets/Logo.png'),
               textField(
                   'Name', Icons.person, false, _nameController),
               textField('Email', Icons.person, false, _emailController),
