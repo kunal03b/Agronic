@@ -23,8 +23,7 @@ class _HomeState extends State<Home> {
   bool isDataLoaded = false;
   String Moisture = '0';
   var result = 0.9;
-  DatabaseReference MoistureRef =
-  FirebaseDatabase.instance.ref('Moisture');
+  DatabaseReference MoistureRef = FirebaseDatabase.instance.ref('Moisture');
   void getData() async {
     MoistureRef.onValue.listen((DatabaseEvent event) {
       setState(() {
@@ -33,6 +32,7 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,39 +60,34 @@ class _HomeState extends State<Home> {
 
   sendMotorStatus(bool motorStatus) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/motor');
-    await ref.set({
-      "motor" : motorStatus
-    });
+    await ref.set({"motor": motorStatus});
     print('Sent motor value: $motor');
   }
+
   sendVal1Status(bool val1Status) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/Val1');
-    await ref.set({
-      "motor" : val1Status
-    });
+    await ref.set({"motor": val1Status});
     print('Sent Valve1 value: $val1');
   }
+
   sendVal2Status(bool val2Status) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/Val2');
-    await ref.set({
-      "motor" : val2Status
-    });
+    await ref.set({"motor": val2Status});
     print('Sent Valve2 value: $val2');
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           actions: [
-           iconButton(context, Icons.logout_outlined, Colors.white, () async {
-             FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-             await firebaseAuth.signOut();
-             Navigator.pushReplacement(context,
-                 MaterialPageRoute(builder: (context) => const Sign_In()));
-           })
-        ],
+            iconButton(context, Icons.logout_outlined, Colors.white, () async {
+              FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+              await firebaseAuth.signOut();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const Sign_In()));
+            })
+          ],
           backgroundColor: Colors.black,
           title: Text(
             '  Agronic',
@@ -121,7 +116,6 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
-
                       // sendMotorStatus(motor);
 
                       Text(
@@ -132,8 +126,9 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       Spacer(),
-                      InkWell(onTap: senddata,
-                        child: CustomSwitch(motor, onChangedFunction1)),
+                      InkWell(
+                          onTap: senddata,
+                          child: CustomSwitch(motor, onChangedFunction1)),
                     ]),
                     Spacer(),
                     Text(
@@ -169,8 +164,10 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           Spacer(),
-                    InkWell(onTap: senddata,
-                        child:CustomSwitch(val1, onChangedFunction2),),
+                          InkWell(
+                            onTap: senddata,
+                            child: CustomSwitch(val1, onChangedFunction2),
+                          ),
                         ]),
                   ),
                   Spacer(),
@@ -193,8 +190,10 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           Spacer(),
-                    InkWell(onTap: senddata,
-                        child:CustomSwitch(val2, onChangedFunction3),),
+                          InkWell(
+                            onTap: senddata,
+                            child: CustomSwitch(val2, onChangedFunction3),
+                          ),
                         ]),
                   ),
                 ],
@@ -246,9 +245,7 @@ class _HomeState extends State<Home> {
                   ),
                   Spacer(),
                   // Spacer(),
-                  isDataLoaded
-                      ? CircularProgressIndicator()
-                      : Text(Moisture),
+                  isDataLoaded ? CircularProgressIndicator() : Text(Moisture),
                   Icon(Icons.percent)
                 ],
               ),
@@ -258,7 +255,7 @@ class _HomeState extends State<Home> {
               LinearPercentIndicator(
                 lineHeight: 10,
                 progressColor: Colors.black,
-                percent: result/100,
+                percent: result / 100,
                 barRadius: Radius.circular(10),
                 animation: true,
                 animationDuration: 1000,
@@ -284,6 +281,7 @@ class _HomeState extends State<Home> {
       ],
     );
   }
+
   Future<dynamic> senddata() async {
     final user = await FirebaseDatabase.instance.ref().child('Test');
     user.set({
