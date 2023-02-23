@@ -125,7 +125,7 @@ class _Sign_UpState extends State<Sign_Up> {
             children: [
               logo('assets/Logo.png'),
               textField('Name', Icons.person, false, _nameController),
-              textField('Email', Icons.person, false, _emailController),
+              textField('Email', Icons.email_rounded, false, _emailController),
               SizedBox(height: 10),
               textField('Password', Icons.lock, true, _passwordController),
               SizedBox(
