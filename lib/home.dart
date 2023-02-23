@@ -19,6 +19,9 @@ class _HomeState extends State<Home> {
   bool val1 = false;
   bool val2 = false;
 
+  //Water level Data
+  bool isWaterLevel= false;
+
   //Moisture Data
   bool isDataLoaded = false;
   String Moisture = '0';
@@ -32,6 +35,23 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
+  //----------------------------------------------------------------------------------------
+  //Moisture Data
+  // bool isdataLoaded = false;
+  // String water_level
+  // = 'Not loaded Yet';
+  // // var data = 0.9;
+  // DatabaseReference water_levelRef = FirebaseDatabase.instance.ref('water_level');
+  // void getLevel() async {
+  //   water_levelRef.onValue.listen((DatabaseEvent event) {
+  //     setState(() {
+  //       water_level = event.snapshot.child('water_level').value.toString();
+  //       // water_level = double.tryParse(water_level)!;
+  //     });
+  //   });
+  // }
+
 
   @override
   void initState() {
@@ -221,6 +241,38 @@ class _HomeState extends State<Home> {
                           ))),
                 ],
               ),
+SizedBox(height: 20,),
+
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Container(padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    boxShadow: [BoxShadow(color: Colors.black)],
+                    color: Colors.grey.shade300,
+                      borderRadius:BorderRadius.all(Radius.circular(10))),
+                  height: 90,
+                    width: 500,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Water Level Status >',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,),
+                        ),
+                        Spacer(),
+                        // isWaterLevel? CircularProgressIndicator():  ,
+                        // Text(water_level),
+                      ],
+                    ),
+                  )
+                ],),
+              ),
+
+
+
               SizedBox(
                 height: 20,
               ),
@@ -259,7 +311,20 @@ class _HomeState extends State<Home> {
                 barRadius: Radius.circular(10),
                 animation: true,
                 animationDuration: 1000,
-              )
+              ),
+              // Spacer(),
+//               SizedBox(
+//                 height: 20,
+//               ),
+//               Text(
+//                 'Water Level Status >',
+//                 style: TextStyle(
+//                   fontWeight: FontWeight.bold,
+//                   fontSize: 20,
+//                 ),
+//               ),
+// SizedBox(height: 20,),
+
             ],
           ),
         ),
