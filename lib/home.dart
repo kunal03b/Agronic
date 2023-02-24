@@ -35,30 +35,34 @@ class _HomeState extends State<Home> {
       });
     });
   }
-
-  //----------------------------------------------------------------------------------------
-  //Moisture Data
-  // bool isdataLoaded = false;
-  // String water_level
-  // = 'Not loaded Yet';
-  // // var data = 0.9;
-  // DatabaseReference water_levelRef = FirebaseDatabase.instance.ref('water_level');
-  // void getLevel() async {
-  //   water_levelRef.onValue.listen((DatabaseEvent event) {
-  //     setState(() {
-  //       water_level = event.snapshot.child('water_level').value.toString();
-  //       // water_level = double.tryParse(water_level)!;
-  //     });
-  //   });
-  // }
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
+    getLevel();
   }
+
+  // ----------------------------------------------------------------------------------------
+  // Water level Data
+  bool isdataLoaded = false;
+  String water_level = 'dacbdc';
+
+
+
+  // var data = 0.9;
+  DatabaseReference water_levelRef = FirebaseDatabase.instance.ref('water_level');
+
+  void getLevel() async {
+    DatabaseReference waterLevelRef = FirebaseDatabase.instance.ref('water_level');
+    waterLevelRef.onValue.listen((event) {
+        setState(() {
+          final waterLevelData = event.snapshot.value.toString();
+          water_level = waterLevelData;
+        });
+    });
+  }
+
 
   onChangedFunction1(bool newValue1) {
     setState(() {
@@ -265,7 +269,10 @@ SizedBox(height: 20,),
                         Spacer(),
                         // isWaterLevel? CircularProgressIndicator():  ,
                         // Text(water_level),
+                        water_level == 'true' ? Text('Turn off the motor') : Text('Yet to be filled')
                       ],
+
+
                     ),
                   )
                 ],),
