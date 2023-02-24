@@ -1,4 +1,3 @@
-// import 'package:agriculture/sensor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,19 +45,19 @@ class _HomeState extends State<Home> {
   // ----------------------------------------------------------------------------------------
   // Water level Data
   bool isdataLoaded = false;
-  String water_level = 'dacbdc';
+  String water_lavel = 'Water Lavel';
 
 
 
   // var data = 0.9;
-  DatabaseReference water_levelRef = FirebaseDatabase.instance.ref('water_level');
+  DatabaseReference water_lavelRef = FirebaseDatabase.instance.ref('water_lavel');
 
   void getLevel() async {
-    DatabaseReference waterLevelRef = FirebaseDatabase.instance.ref('water_level');
+    DatabaseReference waterLevelRef = FirebaseDatabase.instance.ref('water_lavel');
     waterLevelRef.onValue.listen((event) {
         setState(() {
-          final waterLevelData = event.snapshot.value.toString();
-          water_level = waterLevelData;
+          final waterLavelData = event.snapshot.value.toString();
+          water_lavel = waterLavelData;
         });
     });
   }
@@ -268,8 +267,8 @@ SizedBox(height: 20,),
                         ),
                         Spacer(),
                         // isWaterLevel? CircularProgressIndicator():  ,
-                        // Text(water_level),
-                        water_level == 'true' ? Text('Turn off the motor') : Text('Yet to be filled')
+                        // Text(water_lavel),
+                        water_lavel == 'true' ? Text('The field is full of water. Turn off the motor') : Text('Yet to be filled')
                       ],
 
 
