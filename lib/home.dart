@@ -47,8 +47,6 @@ class _HomeState extends State<Home> {
   bool isdataLoaded = false;
   String water_lavel = 'Water Lavel';
 
-
-
   // var data = 0.9;
   DatabaseReference water_lavelRef = FirebaseDatabase.instance.ref('water_lavel');
 
@@ -68,18 +66,17 @@ class _HomeState extends State<Home> {
       motor = newValue1;
     });
   }
-
   onChangedFunction2(bool newValue2) {
     setState(() {
       val1 = newValue2;
     });
   }
-
   onChangedFunction3(bool newValue3) {
     setState(() {
       val2 = newValue3;
     });
   }
+
 
   sendMotorStatus(bool motorStatus) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/motor');
@@ -89,13 +86,13 @@ class _HomeState extends State<Home> {
 
   sendVal1Status(bool val1Status) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/Val1');
-    await ref.set({"motor": val1Status});
+    await ref.set({"valve1": val1Status});
     print('Sent Valve1 value: $val1');
   }
 
   sendVal2Status(bool val2Status) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/Val2');
-    await ref.set({"motor": val2Status});
+    await ref.set({"valve2": val2Status});
     print('Sent Valve2 value: $val2');
   }
 
@@ -270,14 +267,10 @@ SizedBox(height: 20,),
                         // Text(water_lavel),
                         water_lavel == 'true' ? Text('The field is full of water. Turn off the motor') : Text('Yet to be filled')
                       ],
-
-
                     ),
                   )
                 ],),
               ),
-
-
 
               SizedBox(
                 height: 20,
@@ -318,19 +311,6 @@ SizedBox(height: 20,),
                 animation: true,
                 animationDuration: 1000,
               ),
-              // Spacer(),
-//               SizedBox(
-//                 height: 20,
-//               ),
-//               Text(
-//                 'Water Level Status >',
-//                 style: TextStyle(
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 20,
-//                 ),
-//               ),
-// SizedBox(height: 20,),
-
             ],
           ),
         ),
