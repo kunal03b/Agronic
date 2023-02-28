@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:agriculture/reusable_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -131,11 +132,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    void showFilledToast() {
+    void showFilledToast() async {
       if (water_lavel.toLowerCase() == 'true') {
         Fluttertoast.showToast(
             msg: 'The field is full of water. Turn off the motor',
             backgroundColor: Colors.green);
+
+        Vibration.vibrate();
       }
     }
 
@@ -384,12 +387,18 @@ class _HomeState extends State<Home> {
   }
 
   Future<dynamic> senddata() async {
-    final user = await FirebaseDatabase.instance.ref().child('Test');
-    user.set({
-      // "id": "hello",
-      "motor": motor,
-      "val1": val1,
-      "val2": val2,
-    });
+    try {
+      final user = await FirebaseDatabase.instance.ref().child('Test');
+      user.set({
+        // "id": "hello",
+        "motor": motor,
+        "val1": val1,
+        "val2": val2,
+      });
+
+      Fluttertoast.showToast(msg: 'Hardware Configured');
+    } catch (err) {
+      Fluttertoast.showToast(msg: err.toString());
+    }
   }
 }
