@@ -1,9 +1,10 @@
+import 'package:agriculture/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Login.dart';
 import 'package:agriculture/reusable_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class Home extends StatefulWidget {
@@ -19,13 +20,18 @@ class _HomeState extends State<Home> {
   bool val2 = false;
 
   //Water level Data
-  bool isWaterLevel= false;
+  bool isWaterLevel = false;
 
   //Moisture Data
   bool isDataLoaded = false;
   String Moisture = '0';
   var result = 0.9;
+
   DatabaseReference MoistureRef = FirebaseDatabase.instance.ref('Moisture');
+  DatabaseReference motorRef = FirebaseDatabase.instance.ref('Test/motor');
+  DatabaseReference valveOneRef = FirebaseDatabase.instance.ref('Test/val1');
+  DatabaseReference valveTwoRef = FirebaseDatabase.instance.ref('Test/val2');
+
   void getData() async {
     MoistureRef.onValue.listen((DatabaseEvent event) {
       setState(() {
@@ -33,7 +39,32 @@ class _HomeState extends State<Home> {
         result = double.tryParse(Moisture)!;
       });
     });
+
+    motorRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        String motorStatus =
+            event.snapshot.child('Test/motor').value.toString();
+        motor = motorStatus == 'true';
+      });
+    });
+
+    valveOneRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        String valveOneStatus =
+            event.snapshot.child('Test/val1').value.toString();
+        val1 = valveOneStatus == 'true';
+      });
+    });
+
+    valveTwoRef.onValue.listen((DatabaseEvent event) {
+      setState(() {
+        String valveTwoStatus =
+            event.snapshot.child('Test/val2').value.toString();
+        val2 = valveTwoStatus == 'true';
+      });
+    });
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -48,35 +79,37 @@ class _HomeState extends State<Home> {
   String water_lavel = 'Water Lavel';
 
   // var data = 0.9;
-  DatabaseReference water_lavelRef = FirebaseDatabase.instance.ref('water_lavel');
+  DatabaseReference water_lavelRef =
+      FirebaseDatabase.instance.ref('water_lavel');
 
   void getLevel() async {
-    DatabaseReference waterLevelRef = FirebaseDatabase.instance.ref('water_lavel');
+    DatabaseReference waterLevelRef =
+        FirebaseDatabase.instance.ref('water_lavel');
     waterLevelRef.onValue.listen((event) {
-        setState(() {
-          final waterLavelData = event.snapshot.value.toString();
-          water_lavel = waterLavelData;
-        });
+      setState(() {
+        final waterLavelData = event.snapshot.value.toString();
+        water_lavel = waterLavelData;
+      });
     });
   }
-
 
   onChangedFunction1(bool newValue1) {
     setState(() {
       motor = newValue1;
     });
   }
+
   onChangedFunction2(bool newValue2) {
     setState(() {
       val1 = newValue2;
     });
   }
+
   onChangedFunction3(bool newValue3) {
     setState(() {
       val2 = newValue3;
     });
   }
-
 
   sendMotorStatus(bool motorStatus) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('Test/motor');
@@ -98,6 +131,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    void showFilledToast() {
+      if (water_lavel.toLowerCase() == 'true') {
+        Fluttertoast.showToast(
+            msg: 'The field is full of water. Turn off the motor',
+            backgroundColor: Colors.green);
+      }
+    }
+
+    showFilledToast();
+
     return Scaffold(
       appBar: AppBar(
           actions: [
@@ -241,37 +284,44 @@ class _HomeState extends State<Home> {
                           ))),
                 ],
               ),
-SizedBox(height: 20,),
-
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Container(padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    boxShadow: [BoxShadow(color: Colors.black)],
-                    color: Colors.grey.shade300,
-                      borderRadius:BorderRadius.all(Radius.circular(10))),
-                  height: 90,
-                    width: 500,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Water Level Status >',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,),
-                        ),
-                        Spacer(),
-                        // isWaterLevel? CircularProgressIndicator():  ,
-                        // Text(water_lavel),
-                        water_lavel == 'true' ? Text('The field is full of water. Turn off the motor') : Text('Yet to be filled')
-                      ],
-                    ),
-                  )
-                ],),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          boxShadow: [BoxShadow(color: Colors.black)],
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      height: 90,
+                      width: 500,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Water Level Status >',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Spacer(),
+                          // isWaterLevel? CircularProgressIndicator():  ,
+                          // Text(water_lavel),
+                          water_lavel == 'true'
+                              ? Text(
+                                  'The field is full of water. Turn off the motor.')
+                              : Text('Yet to be filled.')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-
               SizedBox(
                 height: 20,
               ),
